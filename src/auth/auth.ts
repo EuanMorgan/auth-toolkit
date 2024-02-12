@@ -5,6 +5,8 @@ import { db } from "~/db";
 export const {
   handlers: { GET, POST },
   auth,
+  signIn,
+  signOut,
 } = NextAuth({
   ...authConfig,
   adapter: DrizzleAdapter(db),
