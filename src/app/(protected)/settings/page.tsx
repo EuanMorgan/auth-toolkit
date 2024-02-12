@@ -3,6 +3,7 @@ import { Button } from "~/components/ui/button";
 
 const SettingsPage = async () => {
   const session = await auth();
+
   return (
     <div className="h-full bg-slate-500 text-white">
       <h1>Settings</h1>

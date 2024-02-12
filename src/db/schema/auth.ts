@@ -19,6 +19,11 @@ export const users = pgTable("user", {
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
   password: text("password"),
+  role: text("role", {
+    enum: ["USER", "ADMIN"],
+  })
+    .notNull()
+    .default("USER"),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
