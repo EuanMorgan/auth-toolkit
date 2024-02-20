@@ -4,7 +4,7 @@ import CardWrapper from "~/components/auth/card-wrapper";
 import { BeatLoader } from "react-spinners";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { verifyEmail } from "~/actions/new-verification";
+import { verifyEmail } from "~/actions/email-verification";
 import FormError from "~/components/form-error";
 
 const ConfirmEmailForm = () => {
