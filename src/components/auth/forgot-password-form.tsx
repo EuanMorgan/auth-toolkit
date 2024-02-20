@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
-import { resetPassword } from "~/actions/reset-password";
+import { sendForgotPasswordEmail } from "~/actions/forgot-password";
 
 import CardWrapper from "~/components/auth/card-wrapper";
 import FormError from "~/components/form-error";
@@ -20,7 +20,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { ResetSchema } from "~/schemas";
 
-export const ResetForm = () => {
+export const ForgotPasswordForm = () => {
   const [isPending, startTransition] = useTransition();
 
   const [formSuccessMessage, setFormSuccessMessage] = useState<
@@ -41,7 +41,7 @@ export const ResetForm = () => {
     setFormSuccessMessage("");
 
     startTransition(() => {
-      resetPassword(values)
+      sendForgotPasswordEmail(values)
         .then((data) => {
           setFormErrorMessage(data?.error);
           setFormSuccessMessage(data?.success);
