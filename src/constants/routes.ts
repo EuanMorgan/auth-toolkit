@@ -9,7 +9,13 @@ export const publicRoutes = ["/", "/auth/confirm-email"];
  * These routes will redirect logged in users to /settings
  * @type {string[]}
  */
-export const authRoutes = ["/auth/login", "/auth/register", "/auth/error"];
+export const authRoutes = [
+  "/auth/login",
+  "/auth/register",
+  "/auth/error",
+  "/auth/forgot-password",
+  "/auth/reset-password",
+];
 
 /**
  * Prefix for API authetication routes

@@ -76,10 +76,22 @@ export const verificationTokens = pgTable(
   "verificationToken",
   {
     identifier: text("identifier").notNull(),
-    token: text("token").notNull(),
+    token: text("token").notNull().unique(),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
   (vt) => ({
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
+  }),
+);
+
+export const passwordResetTokens = pgTable(
+  "passwordResetToken",
+  {
+    identifier: text("identifier").notNull(),
+    token: text("token").notNull().unique(),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+  },
+  (prt) => ({
+    compoundKey: primaryKey({ columns: [prt.identifier, prt.token] }),
   }),
 );

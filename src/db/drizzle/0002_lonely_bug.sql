@@ -1,0 +1,2 @@
+ALTER TABLE "passwordResetToken" ADD CONSTRAINT "passwordResetToken_token_unique" UNIQUE("token");--> statement-breakpoint
+ALTER TABLE "verificationToken" ADD CONSTRAINT "verificationToken_token_unique" UNIQUE("token");

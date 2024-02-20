@@ -17,3 +17,9 @@ export const RegisterSchema = LoginSchema.extend({
     message: "Name is required",
   }),
 });
+
+export const ResetSchema = z.object({
+  email: z.string().email({
+    message: "Email is required",
+  }),
+});
