@@ -50,10 +50,15 @@ export const LoginForm = () => {
     setFormSuccessMessage("");
 
     startTransition(() => {
-      void login(values).then((data) => {
-        setFormErrorMessage(data?.error);
-        setFormSuccessMessage(data?.success);
-      });
+      login(values)
+        .then((data) => {
+          setFormErrorMessage(data?.error);
+          setFormSuccessMessage(data?.success);
+        })
+        .catch(() => {
+          setFormErrorMessage("Something went wrong");
+          setFormSuccessMessage("");
+        });
     });
   };
   return (

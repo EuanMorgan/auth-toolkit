@@ -2,7 +2,7 @@
  * An array of routes that are public
  * @type {string[]}
  */
-export const publicRoutes = ["/"];
+export const publicRoutes = ["/", "/auth/confirm-email"];
 
 /**
  * An array of routes that are only for logged out users

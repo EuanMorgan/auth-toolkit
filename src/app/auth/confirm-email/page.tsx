@@ -1,14 +1,14 @@
 import { Suspense } from "react";
-import { LoginForm } from "~/components/auth/login-form";
+import ConfirmEmailForm from "~/components/auth/confirm-email-form";
 
-const LoginPage = () => {
+const ConfirmEmailPage = () => {
   /* We need to wrap the form in a suspense boundary so we can use the useSearchParams hook
   without opting the route into client side rendering */
   return (
     <Suspense>
-      <LoginForm />
+      <ConfirmEmailForm />
     </Suspense>
   );
 };
 
-export default LoginPage;
+export default ConfirmEmailPage;

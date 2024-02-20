@@ -1,13 +1,12 @@
-import {
-  timestamp,
-  pgTable,
-  text,
-  primaryKey,
-  integer,
-  uuid,
-} from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
 import { relations, sql } from "drizzle-orm";
+import {
+  integer,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
 
 export const users = pgTable("user", {
   id: text("id")
@@ -48,11 +47,11 @@ export const accounts = pgTable(
     id_token: text("id_token"),
     session_state: text("session_state"),
   },
-  account => ({
+  (account) => ({
     compoundKey: primaryKey({
       columns: [account.provider, account.providerAccountId],
     }),
-  })
+  }),
 );
 
 // userId String
@@ -80,7 +79,7 @@ export const verificationTokens = pgTable(
     token: text("token").notNull(),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
-  vt => ({
+  (vt) => ({
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
-  })
+  }),
 );

@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { type z } from "zod";
 import { register } from "~/actions/register";
 import CardWrapper from "~/components/auth/card-wrapper";
 import FormError from "~/components/form-error";
@@ -26,7 +26,7 @@ export const RegisterForm = () => {
     string | undefined
   >("");
   const [formErrorMessage, setFormErrorMessage] = useState<string | undefined>(
-    ""
+    "",
   );
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -42,10 +42,15 @@ export const RegisterForm = () => {
     setFormSuccessMessage("");
 
     startTransition(() => {
-      register(values).then(data => {
-        setFormErrorMessage(data?.error);
-        setFormSuccessMessage(data?.success);
-      });
+      register(values)
+        .then((data) => {
+          setFormErrorMessage(data?.error);
+          setFormSuccessMessage(data?.success);
+        })
+        .catch(() => {
+          setFormErrorMessage("Something went wrong");
+          setFormSuccessMessage("");
+        });
     });
   };
   return (

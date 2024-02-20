@@ -1,8 +1,5 @@
-import { BackButton } from "~/components/auth/back-button";
-import CardWrapper from "~/components/auth/card-wrapper";
-import Header from "~/components/auth/header";
-import { Card, CardFooter, CardHeader } from "~/components/ui/card";
 import { AlertTriangle } from "lucide-react";
+import CardWrapper from "~/components/auth/card-wrapper";
 const ErrorCard = () => {
   return (
     <CardWrapper
