@@ -1,15 +1,15 @@
 /**
- * An array of routes that are piblic
+ * An array of routes that are public
  * @type {string[]}
  */
 export const publicRoutes = ["/"];
 
 /**
- * An array of routes that are private
+ * An array of routes that are only for logged out users
  * These routes will redirect logged in users to /settings
  * @type {string[]}
  */
-export const authRoutes = ["/auth/login", "/auth/register"];
+export const authRoutes = ["/auth/login", "/auth/register", "/auth/error"];
 
 /**
  * Prefix for API authetication routes

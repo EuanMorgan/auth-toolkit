@@ -15,5 +15,5 @@ export const db = drizzle(sql, {
 });
 
 migrate(db, {
-  migrationsFolder: "./drizzle",
+  migrationsFolder: "src/db/drizzle",
 });

@@ -1,9 +1,14 @@
 "use client";
-import CardWrapper from "~/components/auth/card-wrapper";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { setErrorMap, z } from "zod";
-import { LoginSchema } from "~/schemas";
+import { useSearchParams } from "next/navigation";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { login } from "~/actions/login";
+import CardWrapper from "~/components/auth/card-wrapper";
+import FormError from "~/components/form-error";
+import FormSuccess from "~/components/form-success";
+import { Button } from "~/components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,14 +18,17 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { Button } from "~/components/ui/button";
-import FormError from "~/components/form-error";
-import FormSuccess from "~/components/form-success";
-import { useState } from "react";
-import { login } from "~/actions/login";
-import { useTransition } from "react";
+import { LoginSchema } from "~/schemas";
 
 export const LoginForm = () => {
+  const searchParams = useSearchParams();
+  const urlError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "Email is already in use with a different provider."
+      : searchParams.get("error")
+      ? "Something went wrong. Please try again."
+      : "";
+
   const [isPending, startTransition] = useTransition();
 
   const [formSuccessMessage, setFormSuccessMessage] = useState<
@@ -96,7 +104,7 @@ export const LoginForm = () => {
             />
           </div>
           <FormSuccess message={formSuccessMessage} />
-          <FormError message={formErrorMessage} />
+          <FormError message={formErrorMessage || urlError} />
           <Button type="submit" className="w-full" disabled={isPending}>
             Login
           </Button>

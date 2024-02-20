@@ -1,7 +1,7 @@
 import NextAuth, { DefaultSession } from "next-auth";
 import authConfig from "~/auth/config";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { db, schema } from "~/db";
+import { db, eq, schema } from "~/db";
 import { getUserById } from "~/data/user";
 
 export const {
@@ -11,9 +11,24 @@ export const {
   signOut,
 } = NextAuth({
   ...authConfig,
+  pages: {
+    signIn: "/auth/login",
+    error: "/auth/error",
+  },
   adapter: DrizzleAdapter(db),
   session: {
     strategy: "jwt",
+  },
+  events: {
+    linkAccount: async ({ user, profile, account }) => {
+      await db
+        .update(schema.users)
+        .set({
+          emailVerified: new Date(),
+        })
+        .where(eq(schema.users.id, user.id!));
+    },
+    signIn: async message => {},
   },
   callbacks: {
     // async signIn({ user }) {
