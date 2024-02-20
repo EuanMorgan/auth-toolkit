@@ -1,10 +1,12 @@
 "use server";
 
-import { z } from "zod";
-import { hashPassword } from "~/lib/hash";
-import { RegisterSchema } from "~/schemas";
-import { db, schema, eq } from "~/db";
+import type { z } from "zod";
 import { getUserByEmail } from "~/data/user";
+import { db, schema } from "~/db";
+import { hashPassword } from "~/lib/hash";
+import { sendVerificationEmail } from "~/lib/mail";
+import { generateVerificationToken } from "~/lib/tokens";
+import { RegisterSchema } from "~/schemas";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(values);
@@ -26,7 +28,8 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     password: hashedPassword,
   });
 
-  // TODO: Send email verification
+  const verificationToken = await generateVerificationToken(email);
+  await sendVerificationEmail(email, verificationToken.token);
 
-  return { success: "User created!" };
+  return { success: "Confirmation email sent" };
 };

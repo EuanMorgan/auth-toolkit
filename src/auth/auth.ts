@@ -1,8 +1,8 @@
-import NextAuth, { DefaultSession } from "next-auth";
-import authConfig from "~/auth/config";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { db, eq, schema } from "~/db";
+import NextAuth from "next-auth";
+import authConfig from "~/auth/config";
 import { getUserById } from "~/data/user";
+import { db, eq, schema } from "~/db";
 
 export const {
   handlers: { GET, POST },
@@ -20,7 +20,8 @@ export const {
     strategy: "jwt",
   },
   events: {
-    linkAccount: async ({ user, profile, account }) => {
+    linkAccount: async ({ user }) => {
+      // TODO: Check if email is verified from provider
       await db
         .update(schema.users)
         .set({
@@ -28,18 +29,26 @@ export const {
         })
         .where(eq(schema.users.id, user.id!));
     },
-    signIn: async message => {},
+    // signIn: async message => {},
   },
   callbacks: {
-    // async signIn({ user }) {
-    //   const existingUser = await getUserById(user.id!);
+    async signIn({ user, profile, account }) {
+      // Prevent sign in if email is not verified
 
-    //   if (!existingUser || !existingUser.emailVerified) {
-    //     return false;
-    //   }
+      // If not credentials provider, check if email is verified by provider
+      if (account?.provider !== "credentials") {
+        return !!profile?.email_verified;
+      }
 
-    //   return true;
-    // },
+      const existingUser = await getUserById(user.id!);
+
+      if (!existingUser?.emailVerified) {
+        return false;
+      }
+      // TODO: Add 2fa check
+
+      return true;
+    },
     async jwt({ token, user }) {
       console.log({ token });
       token.customField = "customField";

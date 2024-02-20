@@ -1,9 +1,12 @@
 "use server";
 
 import { AuthError } from "next-auth";
-import { z } from "zod";
+import type { z } from "zod";
 import { signIn } from "~/auth";
 import { DEFAULT_LOGIN_REDIRECT } from "~/constants/routes";
+import { getUserByEmail } from "~/data/user";
+import { sendVerificationEmail } from "~/lib/mail";
+import { generateVerificationToken } from "~/lib/tokens";
 import { LoginSchema } from "~/schemas";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
@@ -12,6 +15,20 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     return { error: "Invalid fields!" };
   }
   const { email, password } = validatedFields.data;
+
+  const existingUser = await getUserByEmail(email);
+
+  if (!existingUser?.email || !existingUser.password) {
+    return { error: "Invalid credentials!" };
+  }
+
+  if (!existingUser.emailVerified) {
+    const verificationToken = await generateVerificationToken(email);
+    await sendVerificationEmail(email, verificationToken.token);
+
+    return { success: "Confirmation email sent!" };
+  }
+
   try {
     await signIn("credentials", {
       email,

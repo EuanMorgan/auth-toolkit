@@ -20,6 +20,7 @@ export const env = createEnv({
     GITHUB_CLIENT_SECRET: z.string(),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
+    RESEND_API_KEY: z.string(),
   },
   /**
    * Destructure all client-side variables from `process.env` to make sure they aren't tree-shaken away.

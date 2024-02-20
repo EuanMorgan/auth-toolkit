@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import type { z } from "zod";
 import { login } from "~/actions/login";
 import CardWrapper from "~/components/auth/card-wrapper";
 import FormError from "~/components/form-error";
@@ -26,8 +26,8 @@ export const LoginForm = () => {
     searchParams.get("error") === "OAuthAccountNotLinked"
       ? "Email is already in use with a different provider."
       : searchParams.get("error")
-      ? "Something went wrong. Please try again."
-      : "";
+        ? "Something went wrong. Please try again."
+        : "";
 
   const [isPending, startTransition] = useTransition();
 
@@ -35,7 +35,7 @@ export const LoginForm = () => {
     string | undefined
   >("");
   const [formErrorMessage, setFormErrorMessage] = useState<string | undefined>(
-    ""
+    "",
   );
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -50,7 +50,7 @@ export const LoginForm = () => {
     setFormSuccessMessage("");
 
     startTransition(() => {
-      login(values).then(data => {
+      void login(values).then((data) => {
         setFormErrorMessage(data?.error);
         setFormSuccessMessage(data?.success);
       });
@@ -104,7 +104,7 @@ export const LoginForm = () => {
             />
           </div>
           <FormSuccess message={formSuccessMessage} />
-          <FormError message={formErrorMessage || urlError} />
+          <FormError message={formErrorMessage ?? urlError} />
           <Button type="submit" className="w-full" disabled={isPending}>
             Login
           </Button>
